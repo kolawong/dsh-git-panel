@@ -1,0 +1,9 @@
+node_modules/
+lib/
+*.tsbuildinfo
+*.tgz
+
+# Test output: browser screenshots and the scratch sandboxes the suites build.
+# The four images the READMEs embed live in docs/ and are committed.
+.visual-out/
+.diff-test-sandbox/

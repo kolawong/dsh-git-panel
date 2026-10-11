@@ -1,0 +1,12 @@
+# @dsh-external/dsh-git-panel bundle patch: inserts the Git panel row.
+#
+# A profile boots as an ordered stack of bundle patch layers, so a package
+# listed in `dsh.profile.bundles` contributes rows **only** through this file.
+# Without it the plugin can still be loaded by a runtime injection, but the next
+# profile re-assembly (or a plain restart) drops it — host routes and the left
+# rail icon both disappear. Keep this row here so the plugin is a normal bundle.
+- insert:
+    - id: git-panel
+      name: '@dsh-external/dsh-git-panel'
+      # `inject` and the Config defaults come from the plugin module itself, so
+      # they are deliberately not repeated here: one place to change.
