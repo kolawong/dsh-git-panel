@@ -68,6 +68,10 @@ node -e "const fs=require('fs');fs.rmSync('node_modules/@standard-schema',{recur
 link_pkg cordis vendor/cordis
 link_pkg cosmokit vendor/cosmokit
 link_pkg schemastery vendor/schemastery
+# @deepseek-ai/dsh-tools 提供 defineTool 及其类型：src/index.ts 的三个模型工具靠它，
+# 而它不在 vendor/ 里。少了这一行，从干净 clone 构建会退化成 TS7006（回调参数隐式 any），
+# 只有在恰好有 $HOME/node_modules/@deepseek-ai 链接的机器上才看不出来。
+link_pkg @deepseek-ai/dsh-tools packages/core/tools
 # @types/node（编译类型；checkout 自带）
 link_pkg @types/node node_modules/@types/node
 

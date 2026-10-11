@@ -55,10 +55,11 @@ dev_reload_package  { "packageName": "dsh-git-panel" }    # after changing host 
 
 `dev_install_package` skips an entry that already exists, so host-code changes need `dev_reload_package` (it clears the loader cache and rebuilds the fiber). Client-only changes need neither: `npm run build:client` and a page refresh.
 
-**③ Build from source**:
+**③ Build from source** — `scripts/build.sh` links every build dependency (cordis, schemastery, react, `@types/node`, `@deepseek-ai/dsh-tools`, tsdown) straight out of the checkout, so a clean clone needs **no `npm i`**:
 
 ```bash
-npm i
+git clone git@github.com:kolawong/dsh-git-panel.git
+cd dsh-git-panel
 DSH_CHECKOUT=/path/to/deepseek-harness npm run build:all   # host tsc + client bundle
 ```
 
@@ -312,6 +313,8 @@ aiCommitReasoningEffort: low
 Note the asymmetry that makes this easy to get wrong: **an empty `aiCommitReasoningEffort` omits the option** (the model/route decides), while the literal `off` *requests* that thinking be disabled — and some routes refuse that outright.
 
 **The icon and the routes disappeared after a restart.** The bundle patch row is missing (see above) — check that `cordis.patch.yml` is present and that `package.json` still declares `dsh.bundle.patch`.
+
+**`TS7006: Parameter 'args' implicitly has an 'any' type` when building from a fresh clone.** The build could not resolve `@deepseek-ai/dsh-tools`, so `defineTool`'s callbacks lost their contextual types. `scripts/build.sh` links that package (and every other build dependency) from `DSH_CHECKOUT`; make sure `DSH_CHECKOUT` points at a built DSH checkout.
 
 **The panel shows the old UI after a client change.** `lib/client.js` was not rebuilt: run `npm run build:client` and refresh.
 

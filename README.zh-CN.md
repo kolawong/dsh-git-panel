@@ -34,10 +34,11 @@ dev_install_package { "dir": "/path/to/dsh-git-panel" }   # 首次装配
 dev_reload_package  { "packageName": "dsh-git-panel" }    # 改了 host 代码后热更新
 ```
 
-**③ 从源码构建**：
+**③ 从源码构建** —— `scripts/build.sh` 会把构建依赖（cordis、schemastery、react、`@types/node`、`@deepseek-ai/dsh-tools`、tsdown）直接从 checkout 链接过来，干净 clone **不需要 `npm i`**：
 
 ```bash
-npm i
+git clone git@github.com:kolawong/dsh-git-panel.git
+cd dsh-git-panel
 DSH_CHECKOUT=/path/to/deepseek-harness npm run build:all   # host tsc + client 打包
 ```
 
@@ -384,6 +385,8 @@ node scripts/live-check.mjs                                 # 对运行中的 ha
 node scripts/visual-check.mjs                               # 真浏览器走一遍 UI + 截图（需 harness 在 3080 且环境有 playwright）
 node scripts/rail-check.mjs                                 # 只查左栏图标在不在、面板能不能开（几秒钟）
 ```
+
+从干净 clone 构建若报 `TS7006: Parameter 'args' implicitly has an 'any' type`，说明 `@deepseek-ai/dsh-tools` 没解析到（`defineTool` 的回调因此丢了上下文类型）：`scripts/build.sh` 会从 `DSH_CHECKOUT` 链接它，确认 `DSH_CHECKOUT` 指向一个已构建的 DSH checkout。
 
 `visual-check.mjs` 从 `/root/deepseek-harness` 解析 playwright、用 `~/.cache/ms-playwright` 里的 chromium；两者缺任一个就打印 SKIP 退出 0，不会影响其余测试。它读 profile 的登录凭据只为走一遍登录表单，凭据不落盘、不打印。
 
