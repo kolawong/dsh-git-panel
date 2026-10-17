@@ -27,7 +27,7 @@ import { devNull, homedir } from 'node:os'
 import { basename, dirname, isAbsolute, join, resolve, sep } from 'node:path'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import type { Context } from 'cordis'
-import z from 'schemastery'
+import z from '@deepseek-ai/schemastery'
 
 /** Plugin name; the profile entry and the client bundle use the same spelling. */
 export const name = '@dsh-external/dsh-git-panel'
